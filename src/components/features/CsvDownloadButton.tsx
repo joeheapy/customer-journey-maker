@@ -47,7 +47,7 @@ export function CsvDownloadButton({ features }: CsvDownloadButtonProps) {
       className="gap-2"
     >
       <Download className="h-4 w-4" />
-      Export Features to CSV
+      Export Concept Features to CSV
     </Button>
   );
 }

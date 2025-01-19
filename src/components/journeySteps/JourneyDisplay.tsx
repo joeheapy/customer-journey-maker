@@ -97,7 +97,7 @@ export function JourneyDisplay({
 
   return (
     <div className="space-y-8">
-      <JourneyForm onSubmit={onSubmit} isLoading={loading} />
+      <JourneyForm onSubmit={onSubmit} isLoading={loading || false} />
 
       {error && (
         <Card className="bg-red-50 p-4">

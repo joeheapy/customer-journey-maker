@@ -37,14 +37,14 @@ export function FeatureDisplay({
         {features.map((feature, index) => (
           <Card
             key={index}
-            className="w-[340px] flex-none gradient-pink-dark-reverse border-none"
+            className="w-[320px] flex-none gradient-pink-dark-reverse border-none"
           >
             <CardContent className="p-4">
               <div className="space-y-1">
                 <div>
                   <h2 className="text-xl">{feature.featureName}</h2>
                 </div>
-                <p className="text-base text-foreground">
+                <p className="text-sm text-foreground">
                   {feature.featureDescription}
                 </p>
               </div>

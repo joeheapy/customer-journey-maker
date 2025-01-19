@@ -16,14 +16,14 @@ export function EnablerForm({
   onGenerate,
   loading,
   hasJourney,
-  hasCustomerPains,
+  // hasCustomerPains,
   hasBusinessPains,
 }: EnablerFormProps) {
-  const isDisabled = !hasJourney || !hasCustomerPains || !hasBusinessPains;
+  const isDisabled = !hasJourney || !hasBusinessPains; // || !hasCustomerPains
 
   const getStatusMessage = () => {
     if (!hasJourney) return "Create a service story first.";
-    if (!hasCustomerPains) return "Generate customer pain points first.";
+    //if (!hasCustomerPains) return "Generate customer pain points first.";
     if (!hasBusinessPains) return "Generate business pain points first.";
     return `Brainstorm ${NUMBER_OF_FEATURES} service enablers to get you started.`;
   };
@@ -40,7 +40,9 @@ export function EnablerForm({
             <h2 className="text-2xl font-semibold">Service Enablers</h2>
             <p className="text-base text-foreground">{getStatusMessage()}</p>
           </div>
-          <TariffRoundel cost={TARIFFS.enablers} variant="small" />
+          <div>
+            <TariffRoundel cost={TARIFFS.enablers} variant="small" />
+          </div>
         </div>
         <Button
           type="submit"

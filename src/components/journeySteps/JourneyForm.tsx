@@ -1,47 +1,34 @@
-import { useState, FormEvent } from "react";
+import { useState } from "react";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { JourneyFormData } from "@/lib/types";
 import { Loader2 } from "lucide-react";
+import { JourneyFormData } from "@/lib/types";
 import { TARIFFS } from "@/lib/types";
 import { TariffRoundel } from "@/components/ui/tarrifRoundal";
 
 interface JourneyFormProps {
   onSubmit: (formData: JourneyFormData) => Promise<void>;
-  isLoading?: boolean;
+  isLoading: boolean;
 }
 
-export function JourneyForm({ onSubmit, isLoading = false }: JourneyFormProps) {
+export function JourneyForm({ onSubmit, isLoading }: JourneyFormProps) {
   const [formData, setFormData] = useState<JourneyFormData>({
-    target_customers: "",
-    persona_name: "",
     business_proposition: "",
     customer_scenario: "",
+    target_customers: "",
+    persona_name: "",
   });
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-
-    // Get current Tokens from localStorage
-    const currentTokens = Number(localStorage.getItem("userTokens") ?? "100");
-
-    // Check if enough Tokens
-    if (currentTokens < TARIFFS.journeySteps) {
-      alert("Insufficient Tokens to generate journey steps");
-      return;
-    }
-
-    try {
-      await onSubmit(formData);
-      // Deduct Tokens after successful generation
-      const newBalance = currentTokens - TARIFFS.journeySteps;
-      localStorage.setItem("userTokens", String(newBalance));
-    } catch (error) {
-      console.error("Failed to generate journey:", error);
-      alert("Failed to generate journey steps");
-    }
+  const validateForm = (data: JourneyFormData): boolean => {
+    return Boolean(
+      data.business_proposition &&
+        data.customer_scenario &&
+        data.target_customers &&
+        data.persona_name
+    );
   };
 
   const handleInputChange =
@@ -51,84 +38,108 @@ export function JourneyForm({ onSubmit, isLoading = false }: JourneyFormProps) {
         ...prev,
         [field]: e.target.value,
       }));
+      setError(null);
     };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validateForm(formData)) {
+      setError("All fields are required");
+      return;
+    }
+    try {
+      await onSubmit(formData);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An error occurred");
+    }
+  };
+
   return (
-    <Card className="w-full p-4 gradient-teal-lime border-none">
-      <div className="space-y-6 mb-4">
-        <div className="flex justify-between items-center">
-          <div>
-            <h2 className="text-2xl font-semibold">Service Story Generator</h2>
-            <p className="text-base text-foreground ">
-              Tell us about the customer journey you are working on.
-            </p>
-          </div>
-          <TariffRoundel cost={TARIFFS.journeySteps} variant="small" />
-        </div>
-      </div>
-
-      <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="business_proposition">
-              Business Proposition (add a brand name if you wish).
-            </Label>
-            <Input
-              className="bg-destructive-foreground"
-              id="business_proposition"
-              placeholder="Roadside recovery for electric vehicles"
-              value={formData.business_proposition}
-              onChange={handleInputChange("business_proposition")}
-            />
+    <form onSubmit={handleSubmit}>
+      <Card className="w-full p-6 gradient-teal-lime border-none">
+        <div className="space-y-6">
+          <div className="flex justify-between items-center">
+            <div>
+              <h2 className="text-2xl font-semibold">Service Story</h2>
+              <p className="text-base text-foreground">
+                Create a service story to get started.
+              </p>
+            </div>
+            <div>
+              <TariffRoundel cost={TARIFFS.journeySteps} variant="small" />
+            </div>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="customer_scenario">Customer Scenario</Label>
-            <Input
-              className="bg-destructive-foreground"
-              id="customer_scenario"
-              placeholder="Broken down on a motorway in an electric vehicle"
-              value={formData.customer_scenario}
-              onChange={handleInputChange("customer_scenario")}
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="business_proposition">Business Proposition</Label>
+              <Input
+                id="business_proposition"
+                placeholder="Roadside recovery for electric vehicles"
+                value={formData.business_proposition}
+                onChange={handleInputChange("business_proposition")}
+                className="input-custom"
+                required
+                aria-required="true"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="customer_scenario">Customer Scenario</Label>
+              <Input
+                id="customer_scenario"
+                placeholder="Broken down on a motorway in an electric vehicle"
+                value={formData.customer_scenario}
+                onChange={handleInputChange("customer_scenario")}
+                className="input-custom"
+                required
+                aria-required="true"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="target_customers">Target Customers</Label>
+              <Input
+                id="target_customers"
+                placeholder="Motorists with electric vehicles"
+                value={formData.target_customers}
+                onChange={handleInputChange("target_customers")}
+                className="input-custom"
+                required
+                aria-required="true"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="persona_name">
+                Give the character in your service story a name
+              </Label>
+              <Input
+                id="persona_name"
+                placeholder="Larry"
+                value={formData.persona_name}
+                onChange={handleInputChange("persona_name")}
+                className="input-custom"
+                required
+                aria-required="true"
+              />
+            </div>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="target_customers">Target Customers</Label>
-            <Input
-              className="bg-destructive-foreground"
-              id="target_customers"
-              placeholder="Motorists with electric vehicles"
-              value={formData.target_customers}
-              onChange={handleInputChange("target_customers")}
-            />
-          </div>
+          {error && (
+            <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+          )}
 
-          <div className="space-y-2">
-            <Label htmlFor="persona_name">
-              Give the character in your service story a name.
-            </Label>
-            <Input
-              className="bg-destructive-foreground"
-              id="persona_name"
-              placeholder="Larry"
-              value={formData.persona_name}
-              onChange={handleInputChange("persona_name")}
-            />
-          </div>
-        </div>
-
-        <div className="mt-6">
           <Button
             type="submit"
             disabled={isLoading}
             className="hover:opacity-70 transition-opacity"
           >
             {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {isLoading ? "Saving you time..." : "Generate a Service Story"}
+            {isLoading ? "Saving you time..." : "Create Service Story"}
           </Button>
         </div>
-      </form>
-    </Card>
+      </Card>
+    </form>
   );
 }

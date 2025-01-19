@@ -8,7 +8,7 @@ interface NavBarProps {
 
 export function NavBar({ Tokens, error, onReset }: NavBarProps) {
   return (
-    <nav className="sticky top-0 z-50 w-full px-4 py-2 bg-background/80 backdrop-blur-sm border-b">
+    <nav className="sticky top-0 z-50 w-full px-4 py-2 bg-background/80 backdrop-blur-sm">
       <div className="flex justify-between items-center">
         <h1 className="text-xl font-bold">Customer Journey Maker</h1>
         <div className="flex items-center gap-4">

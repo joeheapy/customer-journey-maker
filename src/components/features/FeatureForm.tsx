@@ -17,14 +17,14 @@ export function FeatureForm({
   loading,
   hasJourney,
   hasCustomerPains,
-  hasBusinessPains,
-}: FeatureFormProps) {
-  const isDisabled = !hasJourney || !hasCustomerPains || !hasBusinessPains;
+}: //hasBusinessPains,
+FeatureFormProps) {
+  const isDisabled = !hasJourney || !hasCustomerPains; // || !hasBusinessPains;
 
   const getStatusMessage = () => {
     if (!hasJourney) return "Create a service story first.";
     if (!hasCustomerPains) return "Generate customer pain points first.";
-    if (!hasBusinessPains) return "Generate business pain points first.";
+    // if (!hasBusinessPains) return "Generate customer pain points first.";
     return `Brainstorm ${NUMBER_OF_FEATURES} service feature ideas to get you started.`;
   };
 
@@ -40,7 +40,10 @@ export function FeatureForm({
             <h2 className="text-2xl font-semibold">Service Features</h2>
             <p className="text-base text-foreground">{getStatusMessage()}</p>
           </div>
-          <TariffRoundel cost={TARIFFS.features} variant="small" />
+          <div>
+            {" "}
+            <TariffRoundel cost={TARIFFS.features} variant="small" />
+          </div>
         </div>
         <Button
           type="submit"

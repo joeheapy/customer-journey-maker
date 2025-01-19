@@ -44,7 +44,7 @@ export function EnablerDisplay({
                 <div>
                   <h2 className="text-xl">{enabler.enablerName}</h2>
                 </div>
-                <p className="text-base text-foreground">
+                <p className="text-sm text-foreground">
                   {enabler.enablerDescription}
                 </p>
               </div>

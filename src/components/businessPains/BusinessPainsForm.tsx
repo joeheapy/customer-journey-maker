@@ -31,7 +31,9 @@ export function BusinessPainsForm({
                 : "Identify likely business pain points at each journey step."}
             </p>
           </div>
-          <TariffRoundel cost={TARIFFS.businessPains} variant="small" />
+          <div className="flex items-center space-x-2">
+            <TariffRoundel cost={TARIFFS.businessPains} variant="small" />
+          </div>
         </div>
         <Button
           type="submit"

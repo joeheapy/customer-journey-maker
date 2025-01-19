@@ -31,7 +31,9 @@ export function CustomerPainsForm({
                 : "Identify likely customer pain points at each journey step."}
             </p>
           </div>
-          <TariffRoundel cost={TARIFFS.customerPains} variant="small" />
+          <div>
+            <TariffRoundel cost={TARIFFS.customerPains} variant="small" />
+          </div>
         </div>
         <Button
           type="submit"

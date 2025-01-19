@@ -31,7 +31,10 @@ export function PersonaForm({
                 : "Draft user personas to inform your research and trigger some early ideas."}
             </p>
           </div>
-          <TariffRoundel cost={TARIFFS.personas} variant="small" />
+          <div>
+            {" "}
+            <TariffRoundel cost={TARIFFS.personas} variant="small" />
+          </div>
         </div>
         <Button
           type="submit"
